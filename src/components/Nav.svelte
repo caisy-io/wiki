@@ -1,4 +1,35 @@
 <script>
+  import { request, gql } from "graphql-request";
+
+  const query = gql`
+    query allNavigationItem {
+      allNavigationItem {
+        edges {
+          node {
+            title
+            slug
+            subitem {
+              ...NavigationItemL1
+            }
+          }
+        }
+      }
+    }
+
+    fragment NavigationItemL1 on NavigationItem {
+      title
+      slug
+    }
+  `;
+
+  let promise = request(
+    "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
+    query
+  ).then(res => {
+    const navItems = res.allNavigationItem.edges.map(e => e.node);
+    return navItems[0].title;
+  });
+
   export let segment;
 </script>
 
@@ -49,6 +80,13 @@
   }
 </style>
 
+{#await promise}
+  <p>...waiting</p>
+{:then number}
+  <p>The number is {number}</p>
+{:catch error}
+  <p style="color: red">{error.message}</p>
+{/await}
 <nav>
   <ul>
     <li>
@@ -70,6 +108,14 @@
         aria-current={segment === 'blog' ? 'page' : undefined}
         href="blog">
         blog
+      </a>
+    </li>
+    <li>
+      <a
+        rel="prefetch"
+        aria-current={segment === 'wiki' ? 'page' : undefined}
+        href="wiki">
+        wiki
       </a>
     </li>
   </ul>
