@@ -1,5 +1,6 @@
 import { request, gql } from "graphql-request";
 import slugify from "slugify";
+import Html from "slate-html-serializer";
 
 const getAllArticles = async () => {
   return (
@@ -37,6 +38,7 @@ const getAllArticles = async () => {
           : ""
       }${e.node.headline}`
     ),
+    text: e.node.text ? Html.serialize(e.node.text) : undefined,
     ...e.node,
   }));
 };
