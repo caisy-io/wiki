@@ -1,4 +1,5 @@
 import { request, gql } from "graphql-request";
+import slugify from "slugify";
 
 const getAllArticles = async () => {
   return (
@@ -28,7 +29,16 @@ const getAllArticles = async () => {
         }
       `
     )
-  ).allArticle.edges.map((e) => e.node);
+  ).allArticle.edges.map((e) => ({
+    slug: slugify(
+      `${
+        e.node.navigationEntry && e.node.navigationEntry.slug
+          ? e.node.navigationEntry.slug
+          : ""
+      }${e.node.headline}`
+    ),
+    ...e.node,
+  }));
 };
 
 export default getAllArticles;

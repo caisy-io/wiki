@@ -1,12 +1,10 @@
 import getAllArticles from "./_articles.js";
-
 export async function get(req, res, next) {
   const lookup = new Map();
 
   const articles = await getAllArticles();
 
   articles.forEach((a) => {
-    console.log(a);
     lookup.set(a.slug, JSON.stringify(a));
   });
   // the `slug` parameter is available because

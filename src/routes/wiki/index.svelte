@@ -30,7 +30,9 @@
 				the user hovers over the link or taps it, instead of
 				waiting for the 'click' event -->
     <li>
-      <a rel="prefetch" href="wiki/{article.navigationEntry.slug}">
+      <a
+        rel="prefetch"
+        href="wiki/{article.navigationEntry && article.navigationEntry.slug}">
         {article.headline}
       </a>
     </li>
