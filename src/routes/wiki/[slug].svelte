@@ -28,11 +28,15 @@
     font-size: 1.4em;
     font-weight: 500;
   }
-
+  .content :global(code),
   .content :global(pre) {
+    display: inline;
+  }
+  .content :global(pre),
+  .content :global(code) {
     background-color: #f9f9f9;
     box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);
-    padding: 0.5em;
+    padding: 2px;
     border-radius: 2px;
     overflow-x: auto;
   }

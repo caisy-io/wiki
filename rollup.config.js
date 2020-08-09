@@ -18,7 +18,7 @@ const onwarn = (warning, onwarn) =>
 export default {
   client: {
     input: config.client.input(),
-    output: config.client.output(),
+    output: { ...config.server.output(), sourcemap: dev },
     plugins: [
       replace({
         "process.browser": true,
@@ -47,7 +47,7 @@ export default {
 
   server: {
     input: config.server.input(),
-    output: config.server.output(),
+    output: { ...config.server.output(), sourcemap: dev },
     plugins: [
       replace({
         "process.browser": false,
