@@ -1,10 +1,14 @@
 <script context="module">
+  import SlateRenderer from "../../components/SlateRenderer/index.svelte";
+
   export async function preload({ params, query }) {
     const res = await this.fetch(`wiki/${params.slug}.json`);
     const data = await res.json();
-
     if (res.status === 200) {
-      return { article: data };
+      return {
+        article: data,
+        code: `const add = (a: number, b: number) => a + b;`
+      };
     } else {
       this.error(res.status, data.message);
     }
@@ -28,24 +32,24 @@
     font-size: 1.4em;
     font-weight: 500;
   }
+  .content :global(h6) {
+    font-size: 1.1em;
+    font-weight: 500;
+  }
+  .content {
+    font-family: "Inter";
+  }
+  .content :global(p) {
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }
   .content :global(code),
   .content :global(pre) {
     display: inline;
-  }
-  .content :global(pre),
-  .content :global(code) {
-    background-color: #f9f9f9;
-    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);
-    padding: 2px;
-    border-radius: 2px;
-    overflow-x: auto;
-  }
-
-  .content :global(pre) :global(code) {
-    background-color: transparent;
+    margin: 0;
     padding: 0;
   }
-
   .content :global(ul) {
     line-height: 1.5;
   }
@@ -62,5 +66,5 @@
 <h1>{article.headline}</h1>
 
 <div class="content">
-  {@html article.text}
+  <SlateRenderer nodes={article.text} />
 </div>
