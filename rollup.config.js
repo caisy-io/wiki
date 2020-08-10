@@ -34,7 +34,6 @@ export default {
         dedupe: ["svelte"],
       }),
       commonjs(),
-
       !dev &&
         terser({
           module: true,
