@@ -75,5 +75,4 @@ const getAllArticles = async () => {
     text: e.node.text ? e.node.text.content : undefined,
   }));
 };
-
 export default getAllArticles;

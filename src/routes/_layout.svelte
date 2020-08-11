@@ -106,6 +106,13 @@
     --grey-50: #f9fafc;
     --solid-background: #f5f6fa;
   }
+  :global(body) {
+    background-color: #f5f6fa;
+  }
+  .wrapper {
+    max-width: 940px;
+    margin: 0 auto;
+  }
 </style>
 
 <svelte:head>
@@ -121,7 +128,8 @@
 </svelte:head>
 
 <Nav {segment} />
-
-<main>
-  <slot />
-</main>
+<div class="wrapper">
+  <main>
+    <slot />
+  </main>
+</div>

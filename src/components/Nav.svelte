@@ -1,6 +1,6 @@
 <script>
   import { request, gql } from "graphql-request";
-
+  import Button from "./Button.svelte";
   const query = gql`
     query allNavigationItem {
       allNavigationItem {
@@ -25,8 +25,8 @@
   let promise = request(
     "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
     query
-  ).then(res => {
-    const navItems = res.allNavigationItem.edges.map(e => e.node);
+  ).then((res) => {
+    const navItems = res.allNavigationItem.edges.map((e) => e.node);
     return navItems[0].title;
   });
 
@@ -35,21 +35,28 @@
 
 <style>
   nav {
-    border-bottom: 1px solid var(--blue-blue);
     font-weight: 300;
-    padding: 0 1em;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(to top, #0099ff, rgba(0, 153, 255, 0.64));
+    align-items: center;   
   }
-
+  nav > div {
+    width: 100%; 
+    max-width: 940px
+  }
+  nav > div > div > ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
   ul {
     margin: 0;
     padding: 0;
-  }
-
-  /* clearfix */
-  ul::after {
-    content: "";
-    display: block;
-    clear: both;
+    width: inherit;
+    height: auto;
   }
 
   li {
@@ -74,21 +81,34 @@
 
   a {
     text-decoration: none;
-    color: var(--blue-blue);
+    color: var(--solid-white);
     padding: 1em 0.5em;
     display: block;
   }
 </style>
 
 <nav>
-  <ul>
-    <li>
-      <a
-        rel="prefetch"
-        aria-current={segment === 'wiki' ? 'page' : undefined}
-        href="wiki">
-        wiki
-      </a>
-    </li>
-  </ul>
+  <div>
+    <div>
+      <ul>
+        <li>
+          <a
+            rel="prefetch"
+            aria-current={segment === '/' ? 'page' : undefined}
+            href="/">
+            caisy
+          </a>
+        </li>
+        <li>
+          <a
+            rel="prefetch"
+            aria-current={segment === '/' ? 'page' : undefined}
+            href="/">
+            <Button>Get in touch</Button>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div />
+  </div>
 </nav>

@@ -1,8 +1,8 @@
 <script context="module">
-  import SlateRenderer from "../../components/SlateRenderer/index.svelte";
+  import SlateRenderer from "../components/SlateRenderer/index.svelte";
 
   export async function preload({ params, query }) {
-    const res = await this.fetch(`wiki/${params.slug}.json`);
+    const res = await this.fetch(`${params.slug}.json`);
     const data = await res.json();
     if (res.status === 200) {
       return {
