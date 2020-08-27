@@ -36,7 +36,7 @@ const serializeSateToHtml = (nodes) => {
 };
 
 const getAllArticles = async () => {
-  return (
+  const res = (
     await request(
       "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
       gql`
@@ -74,5 +74,8 @@ const getAllArticles = async () => {
     ),
     text: e.node.text ? e.node.text.content : undefined,
   }));
+  console.log(`All content from caisy:`)
+  console.dir(res);
+  return res;
 };
 export default getAllArticles;
