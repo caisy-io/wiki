@@ -25,8 +25,8 @@
   let promise = request(
     "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
     query
-  ).then((res) => {
-    const navItems = res.allNavigationItem.edges.map((e) => e.node);
+  ).then(res => {
+    const navItems = res.allNavigationItem.edges.map(e => e.node);
     return navItems[0].title;
   });
 
@@ -41,11 +41,11 @@
     display: flex;
     flex-direction: column;
     background-image: linear-gradient(to top, #0099ff, rgba(0, 153, 255, 0.64));
-    align-items: center;   
+    align-items: center;
   }
   nav > div {
-    width: 100%; 
-    max-width: 940px
+    width: 100%;
+    max-width: 940px;
   }
   nav > div > div > ul {
     width: 100%;
@@ -78,7 +78,18 @@
     display: block;
     bottom: -1px;
   }
-
+  h1 {
+    width: 82px;
+    height: 39px;
+    font-family: Inter;
+    font-size: 32px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+  }
   a {
     text-decoration: none;
     color: var(--solid-white);
@@ -96,7 +107,7 @@
             rel="prefetch"
             aria-current={segment === '/' ? 'page' : undefined}
             href="/">
-            caisy
+            <h1>caisy</h1>
           </a>
         </li>
         <li>

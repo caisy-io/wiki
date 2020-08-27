@@ -1,14 +1,5 @@
-<style>
-  h1 {
-    color: var(--blue-blue);
-  }
-  ul {
-    margin: 0 0 1em 0;
-    line-height: 1.5;
-  }
-</style>
-
 <script context="module">
+  import Search from "../components/molecules/Search.svelte";
   import getAllArticles from "./_articles.js";
   export async function preload({ params, query }) {
     const articles = await getAllArticles();
@@ -19,6 +10,14 @@
 <script>
   export let articles;
 </script>
+
+<style>
+  ul {
+    margin: 0 0 1em 0;
+    line-height: 1.5;
+  }
+</style>
+
 <svelte:head>
   <title>caisy.io</title>
   <meta name="description" content="caisy wiki" />
@@ -33,9 +32,7 @@
   <meta name="theme-color" content="#f1f3f6" />
 </svelte:head>
 
-
-
-<h1>Recent articles</h1>
+<svelte:component this={Search} />
 
 <ul>
   {#each articles as article}
@@ -44,7 +41,9 @@
 				the user hovers over the link or taps it, instead of
 				waiting for the 'click' event -->
     <li>
-      <a rel="prefetch" href="{article.slug}">{article.headline}</a>
+      <a rel="prefetch" href={`/${article.navigationEntry.slug}`}>
+        {article.headline}
+      </a>
     </li>
   {/each}
 </ul>
