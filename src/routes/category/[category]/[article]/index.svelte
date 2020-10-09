@@ -1,19 +1,13 @@
 <script context="module">
-  import SlateRenderer from "../../components/SlateRenderer/index.svelte";
-
-  export async function preload({ params, query }) {
-    if (params.category !== "client") {
-      console.log(`params: `, params);
-      const res = await this.fetch(`${params.slug}.json`);
-      const data = await res.json();
-      if (res.status === 200) {
-        return {
-          article: data,
-          code: `const add = (a: number, b: number) => a + b;`
-        };
-      } else {
-        this.error(res.status, data.message);
-      }
+  import SlateRenderer from "../../../../components/SlateRenderer/index.svelte";
+  import { getArticle } from "../../../_dataProvider.js";
+  export async function preload({ params, query, ...rest }) {
+    console.log(` rest`, rest);
+    console.log(` params.article`, params.article);
+    const articele = await getArticle({ id: params.article });
+    console.log(` articele`, articele);
+    if(articele){
+      return { articele };
     }
   }
 </script>
@@ -63,11 +57,15 @@
 </style>
 
 <svelte:head>
-  <title>{article.headline}</title>
+  {#if article && article.headline}
+    <title>{article.headline}</title>
+  {/if}
 </svelte:head>
 
-<h1>{article.headline}</h1>
+{#if article && article.headline}
+  <h1>{article.headline}</h1>
 
-<div class="content">
-  <SlateRenderer nodes={article.text} />
-</div>
+  <div class="content">
+    <SlateRenderer nodes={article.text} />
+  </div>
+{/if}

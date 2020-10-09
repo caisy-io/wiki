@@ -1,5 +1,10 @@
 import { request, gql } from "graphql-request";
-import slugify from "slugify";
+
+export const destinctOnId = (value, index, self) => {
+  return self.findIndex(v => v.id === value.id) === index;
+}
+
+
 
 const serializeSateToHtml = (nodes) => {
   const res = nodes.map((node) => {
@@ -35,7 +40,36 @@ const serializeSateToHtml = (nodes) => {
   return res;
 };
 
-const getAllArticles = async () => {
+export const getAllNavigationItem = async () => {
+  const articles = await getAllArticles();
+  return articles.map(a => a.navigationEntry).sort((a, b) => new Date(b._meta.updatedAt) - new Date(a._meta.updatedAt))
+    .filter(destinctOnId);
+}
+
+export const getArticle = async ({ id }) => {
+  console.log(` id`, id);
+  const article = (await request(
+    "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
+    gql`
+    query getArticle($id: ID!) {
+      Article(id: $id) {
+        headline
+        _meta {
+          publishedAt
+          updatedAt
+          locales
+          id
+        }
+        text
+      }
+    }
+    `, { id })).Article;
+  return article;
+}
+
+
+export const getAllArticles = async (props) => {
+  const slug = props && props.slug;
   const res = (
     await request(
       "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
@@ -44,6 +78,7 @@ const getAllArticles = async () => {
           allArticle {
             edges {
               node {
+                id
                 headline
                 _meta {
                   publishedAt
@@ -53,6 +88,15 @@ const getAllArticles = async () => {
                 }
                 navigationEntry {
                   ... on NavigationItem {
+                    _meta{
+                      updatedAt
+                    }
+                    title
+                    subitem {
+                      __typename
+                    }
+                    description
+                    id
                     slug
                   }
                 }
@@ -63,19 +107,17 @@ const getAllArticles = async () => {
         }
       `
     )
-  ).allArticle.edges.map((e) => ({
-    ...e.node,
-    slug: slugify(
-      `${
-        e.node.navigationEntry && e.node.navigationEntry.slug
-          ? e.node.navigationEntry.slug
-          : ""
-      }${e.node.headline}`
-    ),
-    text: e.node.text ? e.node.text.content : undefined,
-  }));
-  console.log(`All content from caisy:`)
-  console.dir(res);
+  ).allArticle.edges.map(e => e.node)
+    .sort((a, b) => new Date(b._meta.updatedAt) - new Date(a._meta.updatedAt))
+    .filter(destinctOnId).map((e) => ({
+      ...e,
+      text: e.text ? e.text.content : undefined,
+    }));
+
+  if (slug) {
+    res.filter(a => a.naviagtionEntry && a.naviagtionEntry.slug === slug).sort((a, b) => new Date(b._meta.updatedAt) - new Date(a._meta.updatedAt)).filter(destinctOnId)
+  }
   return res;
 };
+
 export default getAllArticles;

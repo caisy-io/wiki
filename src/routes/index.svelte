@@ -1,14 +1,14 @@
 <script context="module">
-  import Search from "../components/molecules/Search.svelte";
-  import getAllArticles from "./_articles.js";
+  import { getAllNavigationItem } from "./_dataProvider";
   export async function preload({ params, query }) {
-    const articles = await getAllArticles();
-    return { articles };
+    const naviagtionItems = await getAllNavigationItem();
+    console.log(` naviagtionItems`, naviagtionItems);
+    return { naviagtionItems };
   }
 </script>
 
 <script>
-  export let articles;
+  export let naviagtionItems;
 </script>
 
 <style>
@@ -32,18 +32,15 @@
   <meta name="theme-color" content="#f1f3f6" />
 </svelte:head>
 
-<svelte:component this={Search} />
-
 <ul>
-  {#each articles as article}
-    <!-- we're using the non-standard `rel=prefetch` attribute to
-				tell Sapper to load the data for the page as soon as
-				the user hovers over the link or taps it, instead of
-				waiting for the 'click' event -->
-    <li>
-      <a rel="prefetch" href={`/${article.navigationEntry.slug}`}>
-        {article.headline}
-      </a>
-    </li>
+  {#each naviagtionItems as navItem}
+    {#if navItem.title && navItem.slug}
+      <li>
+        <a rel="prefetch" href={`/category/${navItem.slug}`}>
+          <h1>{navItem.title}</h1>
+          <span>{navItem.description}</span>
+        </a>
+      </li>
+    {/if}
   {/each}
 </ul>

@@ -110,14 +110,6 @@
             <h1>caisy</h1>
           </a>
         </li>
-        <li>
-          <a
-            rel="prefetch"
-            aria-current={segment === '/' ? 'page' : undefined}
-            href="/">
-            <Button>Get in touch</Button>
-          </a>
-        </li>
       </ul>
     </div>
     <div />
