@@ -69,6 +69,8 @@
     margin: 0 0 0.5em 0;
   }
   .articleBody {
+    box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+      0 15px 40px rgba(166, 173, 201, 0.2);
     border-radius: 6px;
     background-color: #ffffff;
     padding: 32px 16.66%;
