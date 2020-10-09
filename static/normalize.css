@@ -93,16 +93,13 @@ p,
 pre {
   margin: 1em 0;
 }
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, serif;
-  _font-family: "courier new", monospace;
-  font-size: 1em;
+a:hover,
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
 }
 pre {
-  white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -134,15 +131,15 @@ dl,
 menu,
 ol,
 ul {
-  margin: 1em 0;
+  margin: 0;
 }
 dd {
-  margin: 0 0 0 40px;
+  margin: 0;
 }
 menu,
 ol,
 ul {
-  padding: 0 0 0 40px;
+  padding: 0;
 }
 nav ul,
 nav ol {

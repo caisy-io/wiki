@@ -1,35 +1,4 @@
 <script>
-  import { request, gql } from "graphql-request";
-  import Button from "./Button.svelte";
-  const query = gql`
-    query allNavigationItem {
-      allNavigationItem {
-        edges {
-          node {
-            title
-            slug
-            subitem {
-              ...NavigationItemL1
-            }
-          }
-        }
-      }
-    }
-
-    fragment NavigationItemL1 on NavigationItem {
-      title
-      slug
-    }
-  `;
-
-  let promise = request(
-    "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
-    query
-  ).then(res => {
-    const navItems = res.allNavigationItem.edges.map(e => e.node);
-    return navItems[0].title;
-  });
-
   export let segment;
 </script>
 
@@ -79,8 +48,6 @@
     bottom: -1px;
   }
   h1 {
-    width: 82px;
-    height: 39px;
     font-family: Inter;
     font-size: 32px;
     font-weight: 600;
@@ -107,7 +74,7 @@
             rel="prefetch"
             aria-current={segment === '/' ? 'page' : undefined}
             href="/">
-            <h1>caisy</h1>
+            <h1>Caisy Wiki</h1>
           </a>
         </li>
       </ul>

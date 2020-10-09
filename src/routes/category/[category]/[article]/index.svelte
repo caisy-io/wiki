@@ -1,19 +1,25 @@
 <script context="module">
+  import Breadcrump from "../../../../components/molecules/Breadcrump.svelte";
   import SlateRenderer from "../../../../components/SlateRenderer/index.svelte";
   import { getArticle } from "../../../_dataProvider.js";
   export async function preload({ params, query, ...rest }) {
-    console.log(` rest`, rest);
-    console.log(` params.article`, params.article);
-    const articele = await getArticle({ id: params.article });
-    console.log(` articele`, articele);
-    if(articele){
-      return { articele };
-    }
+    const article = await getArticle({ id: params.article });
+    return { article, params };
   }
 </script>
 
 <script>
   export let article;
+  export let params;
+  const category = params && params.category;
+  const breadcrumpItems = [
+    { href: "/", title: "Home" },
+    { href: `/category/${category}`, title: `${category}` },
+    {
+      href: `/category/${category}/${article.id}`,
+      title: `${article.headline}`,
+    },
+  ];
 </script>
 
 <style>
@@ -31,6 +37,12 @@
   }
   .content :global(h6) {
     font-size: 1.1em;
+    margin: 1.2em 0 0 0;
+    font-weight: 500;
+  }
+  .content :global(h3) {
+    font-size: 1.3em;
+    margin: 1.4em 0 0 0;
     font-weight: 500;
   }
   .content {
@@ -41,9 +53,11 @@
     margin: 0;
     padding: 0;
   }
-  .content :global(code),
+  .date {
+    color: #0099ff;
+  }
+  .content :global(p),
   .content :global(pre) {
-    display: inline;
     margin: 0;
     padding: 0;
   }
@@ -54,18 +68,48 @@
   .content :global(li) {
     margin: 0 0 0.5em 0;
   }
+  .articleBody {
+    border-radius: 6px;
+    background-color: #ffffff;
+    padding: 32px 16.66%;
+  }
+  .headline {
+    text-align: center;
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4e5e78;
+    margin-bottom: 64px;
+  }
 </style>
+
+<Breadcrump items={breadcrumpItems} />
 
 <svelte:head>
   {#if article && article.headline}
-    <title>{article.headline}</title>
+    <title>{'Caisy Wiki | '}{article.headline}</title>
   {/if}
 </svelte:head>
 
 {#if article && article.headline}
-  <h1>{article.headline}</h1>
-
-  <div class="content">
-    <SlateRenderer nodes={article.text} />
-  </div>
+  {#if article.text && article.text.content}
+    <div class="articleBody">
+      <h1 class="headline">{article.headline}</h1>
+      {#if article && article._meta && article._meta.publishedAt}
+        <div class="date">
+          <i>
+            <span>{'Published at ' + new Date(article._meta.publishedAt).toLocaleDateString()}</span>
+          </i>
+        </div>
+      {/if}
+      <div class="content">
+        <SlateRenderer nodes={article.text.content} />
+      </div>
+    </div>
+    <Breadcrump items={breadcrumpItems} />
+  {/if}
 {/if}

@@ -1,22 +1,33 @@
 <script context="module">
+  import Breadcrump from "../components/molecules/Breadcrump.svelte";
   import { getAllNavigationItem } from "./_dataProvider";
   export async function preload({ params, query }) {
     const naviagtionItems = await getAllNavigationItem();
-    console.log(` naviagtionItems`, naviagtionItems);
     return { naviagtionItems };
   }
 </script>
 
-<script>
+<script>import Card from "../components/molecules/Card.svelte";
+
   export let naviagtionItems;
+
+  const breadcrumpItems = [
+    { href: "/", title: "Home" }
+  ];
 </script>
 
 <style>
   ul {
     margin: 0 0 1em 0;
     line-height: 1.5;
+    list-style: none;
+  }
+  li{
+    margin-bottom: 2em;
   }
 </style>
+
+<Breadcrump items={breadcrumpItems} />
 
 <svelte:head>
   <title>caisy.io</title>
@@ -37,8 +48,11 @@
     {#if navItem.title && navItem.slug}
       <li>
         <a rel="prefetch" href={`/category/${navItem.slug}`}>
-          <h1>{navItem.title}</h1>
-          <span>{navItem.description}</span>
+          <Card 
+            headline={navItem.title}
+            description={navItem.description}
+            subline={"View "+ navItem.count + " articles"}
+          />
         </a>
       </li>
     {/if}

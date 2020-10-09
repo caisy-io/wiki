@@ -1,6 +1,5 @@
 <script>
   import Nav from "../components/Nav.svelte";
-
   export let segment;
 </script>
 
@@ -112,6 +111,7 @@
   .wrapper {
     max-width: 940px;
     margin: 0 auto;
+    padding: 0 20px;
   }
 </style>
 

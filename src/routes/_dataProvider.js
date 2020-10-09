@@ -1,6 +1,7 @@
 import { request, gql } from "graphql-request";
 
 export const destinctOnId = (value, index, self) => {
+  value.count = self.filter(v => v.id === value.id).length
   return self.findIndex(v => v.id === value.id) === index;
 }
 
@@ -47,7 +48,6 @@ export const getAllNavigationItem = async () => {
 }
 
 export const getArticle = async ({ id }) => {
-  console.log(` id`, id);
   const article = (await request(
     "https://caisy.io/api/v1/e/f7d8ac8f-70c1-4fb5-8beb-3e68533e2392/graphql",
     gql`
